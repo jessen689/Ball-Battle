@@ -12,12 +12,7 @@ namespace BallBattle.Energy
 		private int currEnergy;
 		private EnergyPoint tempEnergy;
 
-		private void Start()
-		{
-			InitializeEnergy();
-		}
-
-		private void InitializeEnergy()
+		public void InitializeEnergy()
 		{
 			if(energyPoints.Count <= 0)
 			{
@@ -31,7 +26,7 @@ namespace BallBattle.Energy
 			}
 			else
 			{
-				RemoveEnergyPoint(energyPoints.Count);
+				ResetEnergy();
 			}
 
 			currEnergy = 0;
@@ -52,7 +47,7 @@ namespace BallBattle.Energy
 			if (cost > currEnergy)
 				return;
 
-			RemoveEnergyPoint(2);
+			RemoveEnergyPoint(cost);
 			//trigger use for what (?)
 
 		}
@@ -71,6 +66,11 @@ namespace BallBattle.Energy
 					tempEnergy.GenerateEnergy();
 				currEnergy--;
 			}
+		}
+
+		public void ResetEnergy()
+		{
+			RemoveEnergyPoint(energyPoints.Count);
 		}
 	}
 }

@@ -34,6 +34,7 @@ namespace BallBattle.Energy
 		{
 			fillScale.x = 0f;
 			energyFillImg_.transform.localScale = fillScale;
+			StopAllCoroutines();
 		}
 
 		private IEnumerator GeneratingEnergy()

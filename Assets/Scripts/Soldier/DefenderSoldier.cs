@@ -26,6 +26,9 @@ namespace BallBattle.Soldier
 			if (_objDetected.TryGetComponent(out ICaughtable target))
 			{
 				Debug.Log($"Detected :{target}");
+				if (!target.IsCaughtable)
+					return;
+
 				targetMove = _objDetected.transform;
 				IsDetecting = true;
 				currTarget = target;
@@ -34,11 +37,10 @@ namespace BallBattle.Soldier
 		}
 		#endregion
 
-		private void Start()
+		public void SetInitialLocation(Vector3 _position, Quaternion _rotation)
 		{
-			SetActiveMode(true);
-			initialPos = transform.position;
-			initialRotation = transform.rotation;
+			initialPos = _position;
+			initialRotation = _rotation;
 		}
 
 		private void Update()
@@ -48,7 +50,7 @@ namespace BallBattle.Soldier
 				Debug.Log(targetMove.position + " -- " + MoveSpeed);
 				Move(targetMove.position - transform.position, MoveSpeed);
 				
-				if(Vector3.Distance(targetMove.position, transform.position) < caughtRange_)
+				if(Vector3.Distance(targetMove.position, transform.position) < caughtRange_ || !currTarget.IsCaughtable)
 				{
 					Debug.Log("caught target!");
 					IsDetecting = false;

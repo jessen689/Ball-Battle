@@ -2,6 +2,7 @@
 {
 	public interface ICaughtable
 	{
+		bool IsCaughtable { get; }
 		void GettingCaught();
 	}
 }

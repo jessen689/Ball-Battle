@@ -1,13 +1,12 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace BallBattle.Soldier
 {
 	public class SoldierBase : MonoBehaviour, ISoldier
 	{
 		#region Interface Properties
+		public SoldierID soldierID { get { return GetComponent<AttackerSoldier>() ? SoldierID.Attacker : SoldierID.Defender; }}
 		public bool IsPlayer { get; set; }
 		public Color SoldierColorFlag { get; set; }
 
@@ -31,7 +30,7 @@ namespace BallBattle.Soldier
 		{
 			IsPlayer = _isPlayer;
 			SoldierColorFlag = _colorFlag;
-			StartCoroutine(ActivationDelay(spawnDelay_));
+			SetActiveMode(false, true);
 		}
 
 		public void Move(Vector3 _direction, float _speed)
@@ -39,7 +38,8 @@ namespace BallBattle.Soldier
 			if (!IsMoving) return;
 			//Debug.Log($"moving to {_direction} at {_speed} speed");
 			transform.position += _speed * Time.deltaTime * _direction.normalized;
-			transform.rotation = Quaternion.LookRotation(_direction.normalized, transform.up);
+			if(_direction.normalized != Vector3.zero)
+				transform.rotation = Quaternion.LookRotation(_direction.normalized, transform.up);
 		}
 
 		public void TriggerMove(bool _value)
@@ -47,7 +47,7 @@ namespace BallBattle.Soldier
 			IsMoving = _value;
 		}
 
-		public void SetActiveMode(bool _activeValue)
+		public void SetActiveMode(bool _activeValue, bool _isFirstTime = false)
 		{
 			IsActiveMode = _activeValue;
 
@@ -56,7 +56,11 @@ namespace BallBattle.Soldier
 			else
 			{
 				SetSoldierColor(inactiveColor_);
-				StartCoroutine(ActivationDelay(reactivateTime_));
+
+				if(_isFirstTime)
+					StartCoroutine(ActivationDelay(spawnDelay_));
+				else
+					StartCoroutine(ActivationDelay(reactivateTime_));
 			}
 		}
 		#endregion

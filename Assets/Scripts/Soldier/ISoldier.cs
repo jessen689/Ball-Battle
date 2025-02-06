@@ -4,6 +4,7 @@ namespace BallBattle.Soldier
 {
 	public interface ISoldier : IMoveable, IActivatable
 	{
+		SoldierID soldierID { get; }
 		bool IsPlayer { get; set; }
 		Color SoldierColorFlag { get; set; }
 		int EnergyCost { get; }

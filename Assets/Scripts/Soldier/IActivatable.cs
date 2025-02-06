@@ -4,6 +4,6 @@
 	{
 		bool IsActiveMode { get; set; }
 
-		void SetActiveMode(bool _activeValue);
+		void SetActiveMode(bool _activeValue, bool _isFirstTime);
 	}
 }

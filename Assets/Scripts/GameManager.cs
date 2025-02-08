@@ -13,6 +13,9 @@ namespace BallBattle
 		[SerializeField] private Energy.EnergyHandler enemyEnergy_;
 		[SerializeField] private BallHandler ballHandler_;
 		[SerializeField] private MazeGenerator mazeGenerator_;
+		[Header("Field")]
+		[SerializeField] private FieldHandler playerField_;
+		[SerializeField] private FieldHandler enemyField_;
 
 		private void Start()
 		{
@@ -54,11 +57,11 @@ namespace BallBattle
 			}
 			else
 			{
-				if (gameData_.CurrState == GameData.GameState.PlayerAttack)
-					gameData_.SetState(GameData.GameState.PlayerDefend);
-				else
-					gameData_.SetState(GameData.GameState.PlayerAttack);
+				gameData_.SetState(gameData_.CurrState == GameData.GameState.PlayerAttack ? GameData.GameState.PlayerDefend : GameData.GameState.PlayerAttack);
 			}
+
+			playerField_.SetType(gameData_.CurrState == GameData.GameState.PlayerAttack ? Soldier.SoldierID.Attacker : Soldier.SoldierID.Defender);
+			enemyField_.SetType(gameData_.CurrState == GameData.GameState.PlayerAttack ? Soldier.SoldierID.Defender : Soldier.SoldierID.Attacker);
 			timerHandler_.StartCounting(gameData_.MatchTime);
 			playerEnergy_.InitializeEnergy();
 			enemyEnergy_.InitializeEnergy();

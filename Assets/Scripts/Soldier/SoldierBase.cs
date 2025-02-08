@@ -40,6 +40,7 @@ namespace BallBattle.Soldier
 			moveDirectionMarker_.SetActive(IsMoving);
 			if (!IsMoving) return;
 			//Debug.Log($"moving to {_direction} at {_speed} speed");
+			_direction.z = 0;
 			transform.position += _speed * Time.deltaTime * _direction.normalized;
 			if(_direction.normalized != Vector3.zero)
 				transform.rotation = Quaternion.LookRotation(_direction.normalized, transform.up);

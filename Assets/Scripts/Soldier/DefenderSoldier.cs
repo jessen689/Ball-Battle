@@ -26,13 +26,13 @@ namespace BallBattle.Soldier
 			if (_objDetected.TryGetComponent(out ICaughtable target))
 			{
 				Debug.Log($"Detected :{target}");
+				currTarget = target;
+				targetMove = _objDetected.transform;
+
 				if (!target.IsCaughtable)
 					return;
 
-				targetMove = _objDetected.transform;
-				IsDetecting = true;
-				currTarget = target;
-				TriggerMove(true);
+				StartChase();
 			}
 		}
 
@@ -40,6 +40,8 @@ namespace BallBattle.Soldier
 		{
 			base.InitializeSoldier(_isPlayer, _colorFlag);
 			TriggerMove(false);
+			IsDetecting = false;
+			currTarget = null;
 		}
 		#endregion
 
@@ -49,9 +51,27 @@ namespace BallBattle.Soldier
 			initialRotation = _rotation;
 		}
 
+		private void StartChase()
+		{
+			IsDetecting = true;
+			TriggerMove(true);
+		}
+
 		private void Update()
 		{
-			if (IsDetecting)
+			if (currTarget != null)
+			{
+				if (!targetMove.gameObject.activeSelf)
+				{
+					currTarget = null;
+					return;
+				}
+
+				if (currTarget.IsCaughtable && !IsDetecting && IsActiveMode)
+					StartChase();
+			}
+
+			if (IsDetecting && IsActiveMode)
 			{
 				//Debug.Log(targetMove.position + " -- " + MoveSpeed);
 				Move(targetMove.position - transform.position, MoveSpeed);
@@ -62,6 +82,7 @@ namespace BallBattle.Soldier
 					IsDetecting = false;
 					SetActiveMode(false);
 					currTarget.GettingCaught();
+					currTarget = null;
 				}
 			}
 			else if(!IsDetecting && !IsActiveMode)
@@ -80,8 +101,17 @@ namespace BallBattle.Soldier
 		private void OnTriggerEnter(Collider other)
 		{
 			Debug.Log(other.name);
-			if(!IsDetecting && IsActiveMode)
+			if(!IsDetecting)
 				DetectedInRange(other.gameObject);
+		}
+
+		private void OnTriggerExit(Collider other)
+		{
+			if(other.TryGetComponent(out ICaughtable target))
+			{
+				if (target == currTarget)
+					currTarget = null;
+			}
 		}
 	}
 }

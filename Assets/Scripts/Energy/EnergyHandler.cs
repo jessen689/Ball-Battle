@@ -42,14 +42,13 @@ namespace BallBattle.Energy
 			}
 		}
 
-		public void UseEnergy(int cost)
+		public bool UseEnergy(int cost)
 		{
 			if (cost > currEnergy)
-				return;
+				return false;
 
 			RemoveEnergyPoint(cost);
-			//trigger use for what (?)
-
+			return true;
 		}
 
 		private void RemoveEnergyPoint(int _value, bool _isResetAll = false)

@@ -22,15 +22,17 @@ namespace BallBattle.Soldier
 		public bool IsCaughtable { get; private set; }
 		#endregion
 
-		private const float DISTANCE_TO_GOAL = .2f;
+		private const string TAG_TO_DESTROY = "Wall";
 
 		#region Interface Function
 		public void GettingCaught()
 		{
+			if (!IsActiveMode) return;
 			//kick ball to nearest attacker
 			OnPassingBall?.Invoke(transform);
 			IsHoldingBall = false;
 			ballMarker.SetActive(false);
+			targetBall.parent = null;
 			SetActiveMode(false);
 		}
 
@@ -38,6 +40,7 @@ namespace BallBattle.Soldier
 		{
 			base.InitializeSoldier(_isPlayer, _colorFlag);
 			ballMarker.SetActive(false);
+			IsHoldingBall = false;
 		}
 		#endregion
 
@@ -67,18 +70,11 @@ namespace BallBattle.Soldier
 			IsCaughtable = IsActiveMode && IsHoldingBall;
 
 			if (IsHoldingBall)
-			{
 				Move(targetGate.position - transform.position, holdingBallSpeed_);
-				if(Vector3.Distance(targetGate.position, transform.position) <= DISTANCE_TO_GOAL)
-				{
-					GameEvents.Instance.MatchFinished(IsPlayer ? Score.MatchResult.PlayerWin : Score.MatchResult.EnemyWin);
-					IsHoldingBall = false;
-				}
-			}
-			else if (!IsHoldingBall && targetBall.parent == null) //not holding ball and no one holding ball
+			else if (!IsHoldingBall && targetBall.parent == null && IsActiveMode) //not holding ball and no one holding ball
 			{
 				Move(targetBall.position - transform.position, MoveSpeed);
-				if (Vector3.Distance(targetBall.position, transform.position) <= holdingBallRange_)
+				if (Vector2.Distance(targetBall.position, transform.position) <= holdingBallRange_)
 				{
 					HoldingBall();
 				}
@@ -88,6 +84,20 @@ namespace BallBattle.Soldier
 				tempDirection = targetGate.position - transform.position;
 				tempDirection.x = 0;
 				Move(tempDirection, MoveSpeed);
+			}
+		}
+
+		private void OnTriggerEnter(Collider other)
+		{
+			if (other.gameObject.CompareTag(TAG_TO_DESTROY))
+			{
+				GameEvents.Instance.RemoveAtkSoldier(this);
+				IsCaughtable = false;
+			}
+			else if(other.transform == targetGate && IsHoldingBall)
+			{
+				GameEvents.Instance.MatchFinished(IsPlayer ? Score.MatchResult.PlayerWin : Score.MatchResult.EnemyWin);
+				IsHoldingBall = false;
 			}
 		}
 	}

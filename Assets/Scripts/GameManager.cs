@@ -13,33 +13,35 @@ namespace BallBattle
 		[SerializeField] private Energy.EnergyHandler enemyEnergy_;
 		[SerializeField] private BallHandler ballHandler_;
 		[SerializeField] private MazeGenerator mazeGenerator_;
+		[SerializeField] private InputHandler inputHandler_;
 		[Header("Field")]
 		[SerializeField] private FieldHandler playerField_;
 		[SerializeField] private FieldHandler enemyField_;
-
-		private void Start()
-		{
-			StartGame();
-		}
+		[Header("Penalty")]
+		[SerializeField] private Soldier.PenaltySoldier penaltySoldier_;
 
 		private void OnEnable()
 		{
-			timerHandler_.OnTimeOut += () => { FinishMatch(MatchResult.Draw); };
+			timerHandler_.OnTimeOut += TimeOut;
+			GameEvents.Instance.OnStartingGame += StartGame;
+			GameEvents.Instance.OnRetryGame += StartGame;
 			GameEvents.Instance.OnMatchFinished += FinishMatch;
+			GameEvents.Instance.OnPenaltyFinished += ShowGameOver;
 		}
 
 		private void OnDisable()
 		{
-			timerHandler_.OnTimeOut -= () => { FinishMatch(MatchResult.Draw); };
+			timerHandler_.OnTimeOut -= TimeOut;
+			GameEvents.Instance.OnStartingGame -= StartGame;
+			GameEvents.Instance.OnRetryGame -= StartGame;
 			GameEvents.Instance.OnMatchFinished -= FinishMatch;
+			GameEvents.Instance.OnPenaltyFinished -= ShowGameOver;
 		}
 
 		private void Update()
 		{
 			if (Input.GetKeyDown(KeyCode.Z))
-				FinishMatch(MatchResult.PlayerWin);
-			else if (Input.GetKeyDown(KeyCode.X))
-				FinishMatch(MatchResult.EnemyWin);
+				FinishMatch(MatchResult.Draw);
 		}
 
 		private void StartGame()
@@ -51,6 +53,9 @@ namespace BallBattle
 
         private void StartMatch()
 		{
+			mazeGenerator_.HideMaze();
+			inputHandler_.enabled = true;
+			penaltySoldier_.gameObject.SetActive(false);
 			if (gameData_.currRound == 1) //check first round?
 			{
 				gameData_.SetState(GameData.GameState.PlayerAttack);
@@ -66,6 +71,15 @@ namespace BallBattle
 			playerEnergy_.InitializeEnergy();
 			enemyEnergy_.InitializeEnergy();
 			ballHandler_.GenerateBall();
+		}
+
+		private void TimeOut()
+		{
+			timerHandler_.SetCounting(false);
+			if (gameData_.CurrState == GameData.GameState.Penalty)
+				ShowGameOver(false);
+			else
+				FinishMatch(MatchResult.Draw);
 		}
 
 		private void FinishMatch(MatchResult _result)
@@ -95,11 +109,13 @@ namespace BallBattle
 				//player win the game
 				Debug.Log("PLAYER WIN!!!");
 				timerHandler_.SetCounting(false);
+				ShowGameOver(true);
 			}
 			else
 			{
 				//enemy win the game
 				Debug.Log("ENEMY WIN!!!");
+				ShowGameOver(false);
 				timerHandler_.SetCounting(false);
 			}
 			playerEnergy_.ResetEnergy();
@@ -112,7 +128,16 @@ namespace BallBattle
 			timerHandler_.StartCounting(gameData_.MatchTime);
 			mazeGenerator_.InitializeMaze();
 			ballHandler_.GenerateBallMaze(mazeGenerator_.GetRandomBlock().transform.position);
+			inputHandler_.enabled = false;
+			penaltySoldier_.Spawn(mazeGenerator_.GetFirstGeneratedBlock().transform.position);
 			Debug.Log("PENALTY!!!");
+		}
+
+		private void ShowGameOver(bool _isWin)
+		{
+			penaltySoldier_.gameObject.SetActive(false);
+			gameData_.SetWin(_isWin);
+			GameEvents.Instance.OpenMenu(UI.UIManager.UIID.GameOver);
 		}
 	}
 }

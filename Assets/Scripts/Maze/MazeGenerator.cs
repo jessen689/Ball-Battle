@@ -16,8 +16,11 @@ namespace BallBattle.Maze
 
 		private MazeBlock[,] mazeGrid;
 		private bool isFirstTime = true;
+		private MazeBlock firstGeneratedBlock;
 
 		private const float MAZE_BLOCK_SIZE = .8f;
+		private const int ENDPOINT_X_INDEX = 3;
+		private const int ENDPOINT_Y_INDEX = 13;
 
 		private void Awake()
 		{
@@ -42,7 +45,8 @@ namespace BallBattle.Maze
 			else
 				ResetMaze();
 
-			GenerateMaze(null, mazeGrid[mazeWidth_ / 2, 0]); //dibagi 2 biar mulai dari tengah bawah, index 0 = paling kiri/paling bawah
+			firstGeneratedBlock = mazeGrid[mazeWidth_ / 2, 0]; //dibagi 2 biar mulai dari tengah bawah, index 0 = paling kiri/paling bawah
+			GenerateMaze(null, firstGeneratedBlock);
 		}
 
 		private void ResetMaze()
@@ -56,8 +60,14 @@ namespace BallBattle.Maze
 			}
 		}
 
+		public void HideMaze()
+		{
+			startingPointSpawn.gameObject.SetActive(false);
+		}
+
 		private void GenerateMaze(MazeBlock _previousBlock, MazeBlock _currentBlock)
 		{
+			startingPointSpawn.gameObject.SetActive(true);
 			_currentBlock.Visit();
 			ClearWalls(_previousBlock, _currentBlock);
 
@@ -72,6 +82,11 @@ namespace BallBattle.Maze
 					GenerateMaze(_currentBlock, nextBlock);
 				}
 			} while (nextBlock != null);
+		}
+
+		public MazeBlock GetFirstGeneratedBlock()
+		{
+			return firstGeneratedBlock;
 		}
 
 		public MazeBlock GetRandomBlock()
@@ -134,17 +149,20 @@ namespace BallBattle.Maze
 
 		private void ClearWalls(MazeBlock _previousBlock, MazeBlock _currentBlock)
 		{
-			if(_currentBlock.WidthIndex == 0)
-				_currentBlock.ClearLeftWall();
-
-			if(_currentBlock.WidthIndex == mazeWidth_ - 1)
-				_currentBlock.ClearRightWall();
-
-			if (_currentBlock.DepthIndex == 0)
-				_currentBlock.ClearBackWall();
-
-			if (_currentBlock.DepthIndex == mazeDepth_ - 1)
+			if (_currentBlock.WidthIndex == ENDPOINT_X_INDEX && _currentBlock.DepthIndex == ENDPOINT_Y_INDEX)
 				_currentBlock.ClearFrontWall();
+
+			//if(_currentBlock.WidthIndex == 0)
+			//	_currentBlock.ClearLeftWall();
+
+			//if(_currentBlock.WidthIndex == mazeWidth_ - 1)
+			//	_currentBlock.ClearRightWall();
+
+			//if (_currentBlock.DepthIndex == 0)
+			//	_currentBlock.ClearBackWall();
+
+			//if (_currentBlock.DepthIndex == mazeDepth_ - 1)
+			//	_currentBlock.ClearFrontWall();
 
 			if (_previousBlock == null)
 				return;

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &9169213579467281610
+--- !u!1 &3671024170982049350
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,51 +8,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9169213579467281613}
-  - component: {fileID: 9169213579467281612}
-  - component: {fileID: 9169213579467281615}
-  - component: {fileID: 9169213579467281609}
-  - component: {fileID: 9169213579467281614}
-  - component: {fileID: 9169213579467281608}
-  - component: {fileID: 9169213579467281611}
+  - component: {fileID: 4234277479328895154}
+  - component: {fileID: 5282069913361768896}
+  - component: {fileID: 7184087360242851296}
   m_Layer: 0
-  m_Name: DefenderSoldier
+  m_Name: Graphic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9169213579467281613
+--- !u!4 &4234277479328895154
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9169213579467281610}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.51, y: 2.17, z: -0.21}
-  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
-  m_Children:
-  - {fileID: 9169213581352314397}
-  - {fileID: 5288551968330790864}
-  m_Father: {fileID: 0}
+  m_GameObject: {fileID: 3671024170982049350}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 9169213579467281613}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!33 &9169213579467281612
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &5282069913361768896
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9169213579467281610}
+  m_GameObject: {fileID: 3671024170982049350}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &9169213579467281615
+--- !u!23 &7184087360242851296
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9169213579467281610}
+  m_GameObject: {fileID: 3671024170982049350}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -85,6 +79,43 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &9169213579467281610
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9169213579467281613}
+  - component: {fileID: 9169213579467281609}
+  - component: {fileID: 9169213579467281614}
+  - component: {fileID: 9169213579467281608}
+  - component: {fileID: 9169213579467281611}
+  m_Layer: 0
+  m_Name: DefenderSoldier
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9169213579467281613
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9169213579467281610}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.51, y: 2.17, z: -0.21}
+  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
+  m_Children:
+  - {fileID: 4234277479328895154}
+  - {fileID: 9169213581352314397}
+  - {fileID: 5288551968330790864}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!54 &9169213579467281609
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -128,10 +159,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed_: 1
-  inactiveColor_: {r: 0.42352942, g: 0.42352942, b: 0.42352942, a: 1}
+  inactiveColor_: {r: 0.9050087, g: 0.9056604, b: 0.6450694, a: 1}
   spawnDelay_: 0.5
   reactivateTime_: 4
-  soldierRenderer_: {fileID: 9169213579467281615}
+  soldierRenderer_: {fileID: 7184087360242851296}
   moveDirectionMarker_: {fileID: 4769141934650092906}
   caughtRange_: 0.2
   returnSpeed_: 2
@@ -176,7 +207,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9169213579467281613}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5687497139252482107
 PrefabInstance:
@@ -188,7 +219,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: afbe895c15dbe474e9bcdd47898953ec,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: afbe895c15dbe474e9bcdd47898953ec,
         type: 3}

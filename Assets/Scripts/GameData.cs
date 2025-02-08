@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace BallBattle
 {
@@ -38,10 +39,19 @@ namespace BallBattle
 		public Transform PlayerGateTransform { get { return playerGateTransform_; } }
 		public Transform EnemyGateTransform { get { return enemyGateTransform_; } }
 		public GameState CurrState { get; private set; }
+		public bool IsWinGame { get; private set; }
+
+		public event Action OnStateChange;
 
 		public void SetState(GameState _state)
 		{
 			CurrState = _state;
+			OnStateChange?.Invoke();
+		}
+
+		public void SetWin(bool _value)
+		{
+			IsWinGame = _value;
 		}
 	}
 }

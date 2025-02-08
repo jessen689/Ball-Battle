@@ -46,6 +46,7 @@ namespace BallBattle.Energy
 				energyFillImg_.transform.localScale = fillScale;
 				yield return null;
 			}
+
 			OnEnergyFilled?.Invoke();
 			energyFillImg_.color = energyColor;
 		}

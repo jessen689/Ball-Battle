@@ -8,6 +8,7 @@ namespace BallBattle
 	public class PassingHandler : MonoBehaviour
 	{
 		[SerializeField] private float passingSpeed_;
+		[SerializeField] private GameData gameData_;
 
 		private float nearestTarget;
 		private float tempDistance;
@@ -35,6 +36,7 @@ namespace BallBattle
 			{
 				//no nearby active target
 				Debug.Log("NO OTHER ACTIVE ATTACKER FOUND!");
+				GameEvents.Instance.MatchFinished(gameData_.CurrState == GameData.GameState.PlayerAttack ? Score.MatchResult.EnemyWin : Score.MatchResult.PlayerWin);
 			}
 			else
 			{

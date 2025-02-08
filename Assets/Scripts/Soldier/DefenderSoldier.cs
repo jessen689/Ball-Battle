@@ -35,6 +35,12 @@ namespace BallBattle.Soldier
 				TriggerMove(true);
 			}
 		}
+
+		public override void InitializeSoldier(bool _isPlayer, Color _colorFlag)
+		{
+			base.InitializeSoldier(_isPlayer, _colorFlag);
+			TriggerMove(false);
+		}
 		#endregion
 
 		public void SetInitialLocation(Vector3 _position, Quaternion _rotation)
@@ -47,7 +53,7 @@ namespace BallBattle.Soldier
 		{
 			if (IsDetecting)
 			{
-				Debug.Log(targetMove.position + " -- " + MoveSpeed);
+				//Debug.Log(targetMove.position + " -- " + MoveSpeed);
 				Move(targetMove.position - transform.position, MoveSpeed);
 				
 				if(Vector3.Distance(targetMove.position, transform.position) < caughtRange_ || !currTarget.IsCaughtable)
@@ -56,12 +62,10 @@ namespace BallBattle.Soldier
 					IsDetecting = false;
 					SetActiveMode(false);
 					currTarget.GettingCaught();
-					TriggerMove(false);
 				}
 			}
 			else if(!IsDetecting && !IsActiveMode)
 			{
-				TriggerMove(true);
 				Move(initialPos - transform.position, returnSpeed_);
 
 				if(Vector3.Distance(initialPos, transform.position) < RANGE_TO_SNAP)

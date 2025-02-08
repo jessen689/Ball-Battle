@@ -3,28 +3,36 @@ using UnityEngine;
 
 namespace BallBattle.Utility
 {
-	public class ObjectPooler<T> 
+	public class ObjectPooler<T>
 	{
-		private List<T> activePool = new List<T>();
-		private Queue<T> inactivePool = new Queue<T>();
+		private List<GameObject> activePool = new List<GameObject>();
+		private Queue<GameObject> inactivePool = new Queue<GameObject>();
+		private List<T> activeTPool = new List<T>();
 
-		public T SummonObject(GameObject _prefabsToSpawn)
+		public GameObject SummonObject(GameObject _prefabsToSpawn)
 		{
-			if (inactivePool.Count <= 0)
-			{
-				if (Object.Instantiate(_prefabsToSpawn).TryGetComponent(out T objectPool))
-					activePool.Add(objectPool);
-				else
-					Debug.Log($"Cannot Get Component in prefab {_prefabsToSpawn.name}");
-			}
-			else
-				activePool.Add(inactivePool.Dequeue());
+			GameObject newObj;
 
-			return activePool[activePool.Count - 1];
+			if (inactivePool.Count > 0)
+				newObj = inactivePool.Dequeue();
+			else
+				newObj = Object.Instantiate(_prefabsToSpawn);
+
+			activePool.Add(newObj);
+			newObj.SetActive(true);
+
+			if (activePool[activePool.Count - 1].TryGetComponent(out T _TObj))
+				activeTPool.Add(_TObj);
+			else
+				Debug.Log("Type not found in Summoned GameObject.");
+
+			return newObj;
 		}
 
-		public void RemoveObject(T _target)
+		public void RemoveObject(GameObject _target)
 		{
+			_target.SetActive(false);
+			activeTPool.RemoveAt(activePool.IndexOf(_target));
 			activePool.Remove(_target);
 			inactivePool.Enqueue(_target);
 		}
@@ -35,15 +43,17 @@ namespace BallBattle.Utility
 			{
 				foreach(var obj in activePool)
 				{
+					obj.SetActive(false);
 					inactivePool.Enqueue(obj);
 				}
+				activeTPool.Clear();
 				activePool.Clear();
 			}
 		}
 
-		public List<T> GetActivePool()
+		public (List<GameObject> _go,List<T> _class) GetActivePool()
 		{
-			return new List<T>(activePool);
+			return (activePool, activeTPool);
 		}
 	}
 }

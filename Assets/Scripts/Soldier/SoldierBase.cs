@@ -24,17 +24,20 @@ namespace BallBattle.Soldier
 		[SerializeField] private float spawnDelay_;
 		[SerializeField] private float reactivateTime_;
 		[SerializeField] private MeshRenderer soldierRenderer_;
+		[SerializeField] private GameObject moveDirectionMarker_;
 
 		#region Interface Function
-		public void InitializeSoldier(bool _isPlayer, Color _colorFlag)
+		public virtual void InitializeSoldier(bool _isPlayer, Color _colorFlag)
 		{
 			IsPlayer = _isPlayer;
 			SoldierColorFlag = _colorFlag;
+			moveDirectionMarker_.SetActive(false);
 			SetActiveMode(false, true);
 		}
 
 		public void Move(Vector3 _direction, float _speed)
 		{
+			moveDirectionMarker_.SetActive(IsMoving);
 			if (!IsMoving) return;
 			//Debug.Log($"moving to {_direction} at {_speed} speed");
 			transform.position += _speed * Time.deltaTime * _direction.normalized;
@@ -49,6 +52,9 @@ namespace BallBattle.Soldier
 
 		public void SetActiveMode(bool _activeValue, bool _isFirstTime = false)
 		{
+			if (!gameObject.activeSelf)
+				return;
+
 			IsActiveMode = _activeValue;
 
 			if (_activeValue)

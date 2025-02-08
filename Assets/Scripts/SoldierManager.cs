@@ -27,6 +27,22 @@ namespace BallBattle
 
 		private Vector3 temp;
 
+		private void OnEnable()
+		{
+			GameEvents.Instance.OnSpawnSoldier += SummonSoldier;
+			GameEvents.Instance.OnRemoveAllSoldier += RemoveAllSoldiers;
+			GameEvents.Instance.OnRemoveAttacker += RemoveAttackSoldier;
+			GameEvents.Instance.OnRemoveDefender += RemoveDefendSoldier;
+		}
+
+		private void OnDisable()
+		{
+			GameEvents.Instance.OnSpawnSoldier -= SummonSoldier;
+			GameEvents.Instance.OnRemoveAllSoldier -= RemoveAllSoldiers;
+			GameEvents.Instance.OnRemoveAttacker -= RemoveAttackSoldier;
+			GameEvents.Instance.OnRemoveDefender -= RemoveDefendSoldier;
+		}
+
 		private void Update()
 		{
 			temp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -47,20 +63,26 @@ namespace BallBattle
 					//var summoned = _soldierType == SoldierID.Attacker ? soldierAtkPooler.SummonObject(data.prefabs) : soldierDefPooler.SummonObject(data.prefabs);
 					if(_soldierType == SoldierID.Attacker)
 					{
-						tempAtkSummoned = soldierAtkPooler.SummonObject(data.prefabs);
-						tempAtkSummoned.InitializeSoldier(_isPlayerSide, _isPlayerSide ? gameData_.PlayerColorFlag : gameData_.EnemyColorFlag);
-						tempAtkSummoned.SetTarget(gameData_.BallTransform, _isPlayerSide ? gameData_.EnemyGateTransform : gameData_.PlayerGateTransform);
-						tempAtkSummoned.OnPassingBall += TriggerPass;
-						tempAtkSummoned.transform.position = _position;
-						tempAtkSummoned.gameObject.SetActive(true);
+						if (soldierAtkPooler.SummonObject(data.prefabs).TryGetComponent(out tempAtkSummoned))
+						{
+							tempAtkSummoned.InitializeSoldier(_isPlayerSide, _isPlayerSide ? gameData_.PlayerColorFlag : gameData_.EnemyColorFlag);
+							tempAtkSummoned.SetTarget(gameData_.BallTransform, _isPlayerSide ? gameData_.EnemyGateTransform : gameData_.PlayerGateTransform);
+							tempAtkSummoned.OnPassingBall += TriggerPass;
+							tempAtkSummoned.transform.position = _position;
+						}
+						else
+							Debug.Log("Attacker not found...");
 					}
 					else
 					{
-						tempDefSummoned = soldierDefPooler.SummonObject(data.prefabs);
-						tempDefSummoned.InitializeSoldier(_isPlayerSide, _isPlayerSide ? gameData_.PlayerColorFlag : gameData_.EnemyColorFlag);
-						tempDefSummoned.SetInitialLocation(_position, Quaternion.LookRotation(((_isPlayerSide ? gameData_.EnemyGateTransform : gameData_.PlayerGateTransform).position - _position).normalized, Vector3.back));
-						tempDefSummoned.transform.position = _position;
-						tempDefSummoned.gameObject.SetActive(true);
+						if (soldierDefPooler.SummonObject(data.prefabs).TryGetComponent(out tempDefSummoned))
+						{
+							tempDefSummoned.InitializeSoldier(_isPlayerSide, _isPlayerSide ? gameData_.PlayerColorFlag : gameData_.EnemyColorFlag);
+							tempDefSummoned.SetInitialLocation(_position, Quaternion.LookRotation(((_isPlayerSide ? gameData_.EnemyGateTransform : gameData_.PlayerGateTransform).position - _position).normalized, Vector3.back));
+							tempDefSummoned.transform.position = _position;
+						}
+						else
+							Debug.Log("Defender not found...");
 					}
 					return;
 				}
@@ -69,15 +91,13 @@ namespace BallBattle
 
 		private void RemoveAttackSoldier(AttackerSoldier _target)
 		{
-			_target.gameObject.SetActive(false);
 			_target.OnPassingBall -= TriggerPass;
-			soldierAtkPooler.RemoveObject(_target);
+			soldierAtkPooler.RemoveObject(_target.gameObject);
 		}
 
 		private void RemoveDefendSoldier(DefenderSoldier _target)
 		{
-			_target.gameObject.SetActive(false);
-			soldierDefPooler.RemoveObject(_target);
+			soldierDefPooler.RemoveObject(_target.gameObject);
 		}
 
 		private void RemoveAllSoldiers()
@@ -88,7 +108,7 @@ namespace BallBattle
 
 		private void TriggerPass(Transform _soldierPass)
 		{
-			passingHandler_.PassBallToNearby(_soldierPass.transform, gameData_.BallTransform, soldierAtkPooler.GetActivePool());
+			passingHandler_.PassBallToNearby(_soldierPass.transform, gameData_.BallTransform, soldierAtkPooler.GetActivePool()._class);
 		}
 	}
 }

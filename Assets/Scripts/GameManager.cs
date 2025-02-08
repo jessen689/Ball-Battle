@@ -1,4 +1,5 @@
-﻿using BallBattle.Score;
+﻿using BallBattle.Maze;
+using BallBattle.Score;
 using UnityEngine;
 
 namespace BallBattle
@@ -10,6 +11,8 @@ namespace BallBattle
 		[SerializeField] private ScoreHandler scoreHandler_;
 		[SerializeField] private Energy.EnergyHandler playerEnergy_;
 		[SerializeField] private Energy.EnergyHandler enemyEnergy_;
+		[SerializeField] private BallHandler ballHandler_;
+		[SerializeField] private MazeGenerator mazeGenerator_;
 
 		private void Start()
 		{
@@ -19,11 +22,13 @@ namespace BallBattle
 		private void OnEnable()
 		{
 			timerHandler_.OnTimeOut += () => { FinishMatch(MatchResult.Draw); };
+			GameEvents.Instance.OnMatchFinished += FinishMatch;
 		}
 
 		private void OnDisable()
 		{
 			timerHandler_.OnTimeOut -= () => { FinishMatch(MatchResult.Draw); };
+			GameEvents.Instance.OnMatchFinished -= FinishMatch;
 		}
 
 		private void Update()
@@ -57,13 +62,15 @@ namespace BallBattle
 			timerHandler_.StartCounting(gameData_.MatchTime);
 			playerEnergy_.InitializeEnergy();
 			enemyEnergy_.InitializeEnergy();
+			ballHandler_.GenerateBall();
 		}
 
 		private void FinishMatch(MatchResult _result)
 		{
 			scoreHandler_.SetMatchResult(gameData_.currRound, _result);
+			GameEvents.Instance.RemoveAllSoldier();
 
-            if (gameData_.currRound < gameData_.MaxRounds)
+			if (gameData_.currRound < gameData_.MaxRounds)
 			{
                 gameData_.currRound++;
                 StartMatch();
@@ -100,6 +107,8 @@ namespace BallBattle
 		{
             gameData_.SetState(GameData.GameState.Penalty);
 			timerHandler_.StartCounting(gameData_.MatchTime);
+			mazeGenerator_.InitializeMaze();
+			ballHandler_.GenerateBallMaze(mazeGenerator_.GetRandomBlock().transform.position);
 			Debug.Log("PENALTY!!!");
 		}
 	}

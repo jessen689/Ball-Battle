@@ -52,7 +52,7 @@ namespace BallBattle.Energy
 
 		}
 
-		private void RemoveEnergyPoint(int _value)
+		private void RemoveEnergyPoint(int _value, bool _isResetAll = false)
 		{
 			for(int loop = 0; loop < _value; loop++)
 			{
@@ -62,7 +62,7 @@ namespace BallBattle.Energy
 				tempEnergy.RemoveEnergy();
 				energyPoints.Add(tempEnergy);
 
-				if (currEnergy == energyPoints.Count)
+				if (currEnergy == energyPoints.Count && !_isResetAll)
 					tempEnergy.GenerateEnergy();
 				currEnergy--;
 			}
@@ -70,7 +70,7 @@ namespace BallBattle.Energy
 
 		public void ResetEnergy()
 		{
-			RemoveEnergyPoint(energyPoints.Count);
+			RemoveEnergyPoint(energyPoints.Count, true);
 		}
 	}
 }

@@ -25,6 +25,7 @@ namespace BallBattle.Soldier
 		[SerializeField] private float reactivateTime_;
 		[SerializeField] private MeshRenderer soldierRenderer_;
 		[SerializeField] private GameObject moveDirectionMarker_;
+		[SerializeField] protected SoldierAnimHandler soldierAnimator_;
 
 		#region Interface Function
 		public virtual void InitializeSoldier(bool _isPlayer, Color _colorFlag)
@@ -33,6 +34,7 @@ namespace BallBattle.Soldier
 			SoldierColorFlag = _colorFlag;
 			moveDirectionMarker_.SetActive(false);
 			SetActiveMode(false, true);
+			soldierAnimator_.PlayAnim(SoldierAnimHandler.AnimID.Spawn);
 		}
 
 		public void Move(Vector3 _direction, float _speed)
@@ -44,6 +46,8 @@ namespace BallBattle.Soldier
 			transform.position += _speed * Time.deltaTime * _direction.normalized;
 			if(_direction.normalized != Vector3.zero)
 				transform.rotation = Quaternion.LookRotation(_direction.normalized, transform.up);
+
+			soldierAnimator_.PlayAnim(SoldierAnimHandler.AnimID.Run);
 		}
 
 		public void TriggerMove(bool _value)

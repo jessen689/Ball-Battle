@@ -34,6 +34,7 @@ namespace BallBattle.Soldier
 			ballMarker.SetActive(false);
 			targetBall.parent = null;
 			SetActiveMode(false);
+			soldierAnimator_.PlayAnim(SoldierAnimHandler.AnimID.Fall);
 		}
 
 		public override void InitializeSoldier(bool _isPlayer, Color _colorFlag)
@@ -66,7 +67,7 @@ namespace BallBattle.Soldier
 
 		private void Update()
 		{
-			TriggerMove(IsActiveMode && !isPassTarget);
+			TriggerMove(IsActiveMode);
 			IsCaughtable = IsActiveMode && IsHoldingBall;
 
 			if (IsHoldingBall)

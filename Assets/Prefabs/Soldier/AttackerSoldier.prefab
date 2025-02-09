@@ -42,6 +42,8 @@ GameObject:
   - component: {fileID: 2688928411963198939}
   - component: {fileID: 2688928411963198943}
   - component: {fileID: 2688928411963198940}
+  - component: {fileID: 1492341890894693010}
+  - component: {fileID: 250714681012740906}
   m_Layer: 0
   m_Name: AttackerSoldier
   m_TagString: Untagged
@@ -115,10 +117,43 @@ MonoBehaviour:
   reactivateTime_: 2.5
   soldierRenderer_: {fileID: 8843887696177453915}
   moveDirectionMarker_: {fileID: 1251172518014304339}
+  soldierAnimator_: {fileID: 250714681012740906}
   holdingBallSpeed_: 0.75
   holdingBallRange_: 0.1
   holdingBallParent_: {fileID: 2688928411603095690}
   ballMarker: {fileID: 8003285419021575829}
+--- !u!95 &1492341890894693010
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2688928411963198941}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 186d741710a0356429e7f7cd23ecba27, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &250714681012740906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2688928411963198941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbe00bbd66c306045ba67193628e0ecf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator_: {fileID: 1492341890894693010}
 --- !u!1 &8003285419021575829
 GameObject:
   m_ObjectHideFlags: 0

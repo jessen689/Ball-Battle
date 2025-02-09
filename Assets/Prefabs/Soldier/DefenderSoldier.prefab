@@ -92,6 +92,8 @@ GameObject:
   - component: {fileID: 9169213579467281614}
   - component: {fileID: 9169213579467281608}
   - component: {fileID: 9169213579467281611}
+  - component: {fileID: 1682757075405695499}
+  - component: {fileID: -3840706656387546412}
   m_Layer: 0
   m_Name: DefenderSoldier
   m_TagString: Untagged
@@ -164,6 +166,7 @@ MonoBehaviour:
   reactivateTime_: 4
   soldierRenderer_: {fileID: 7184087360242851296}
   moveDirectionMarker_: {fileID: 4769141934650092906}
+  soldierAnimator_: {fileID: -3840706656387546412}
   caughtRange_: 0.2
   returnSpeed_: 2
 --- !u!135 &9169213579467281611
@@ -179,6 +182,38 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3.5
   m_Center: {x: 0.000000059604645, y: 2.6645353e-15, z: -0.00000008940697}
+--- !u!95 &1682757075405695499
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9169213579467281610}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 507b44de12d9df2489befb3bfaa29e1f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-3840706656387546412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9169213579467281610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbe00bbd66c306045ba67193628e0ecf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator_: {fileID: 1682757075405695499}
 --- !u!1 &9169213581352314396
 GameObject:
   m_ObjectHideFlags: 0

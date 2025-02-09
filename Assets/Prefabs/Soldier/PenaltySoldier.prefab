@@ -279,6 +279,8 @@ GameObject:
   - component: {fileID: 5550029258838708024}
   - component: {fileID: 5550029258838708028}
   - component: {fileID: 5550029258838708031}
+  - component: {fileID: 8886207857345232720}
+  - component: {fileID: 6742831409507278255}
   m_Layer: 0
   m_Name: PenaltySoldier
   m_TagString: Untagged
@@ -353,6 +355,39 @@ MonoBehaviour:
   ballParent_: {fileID: 5550029258661843561}
   targetGate_: {fileID: 0}
   targetBall_: {fileID: 0}
+  animHandler_: {fileID: 6742831409507278255}
+--- !u!95 &8886207857345232720
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5550029258838708030}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 504606681050e3c4c8e6d0dfd6ba74da, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6742831409507278255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5550029258838708030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbe00bbd66c306045ba67193628e0ecf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator_: {fileID: 8886207857345232720}
 --- !u!1 &8721320557723239088
 GameObject:
   m_ObjectHideFlags: 0

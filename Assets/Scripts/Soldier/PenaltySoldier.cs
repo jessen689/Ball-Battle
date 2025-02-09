@@ -11,6 +11,7 @@ namespace BallBattle.Soldier
 		[SerializeField] private Transform ballParent_;
 		[SerializeField] private Transform targetGate_;
 		[SerializeField] private Transform targetBall_;
+		[SerializeField] private SoldierAnimHandler animHandler_;
 
 		#region Interface Property
 		public float MoveSpeed { get { return moveSpeed_; } }
@@ -59,10 +60,12 @@ namespace BallBattle.Soldier
 				tempPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 				TriggerMove(Vector2.Distance(tempPos, transform.position) > REACH_DESTINATION_DISTANCE);
 				Move(tempPos - transform.position, MoveSpeed);
+				animHandler_.PlayAnim(SoldierAnimHandler.AnimID.Run);
 			}
 			else
 			{
 				TriggerMove(false);
+				animHandler_.PlayAnim(SoldierAnimHandler.AnimID.Idle);
 			}
 
 			if(Vector2.Distance(targetBall_.position, transform.position) <= GET_BALL_DISTANCE && !isHoldingBall)

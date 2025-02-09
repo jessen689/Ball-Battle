@@ -94,6 +94,7 @@ namespace BallBattle.Soldier
 					transform.position = initialPos;
 					transform.rotation = initialRotation;
 					TriggerMove(false);
+					soldierAnimator_.PlayAnim(SoldierAnimHandler.AnimID.Idle);
 				}
 			}
 		}

@@ -13,7 +13,6 @@ namespace BallBattle.Soldier
 		private Transform targetGate;
 		private Transform targetBall;
 		private Vector3 tempDirection;
-		private bool isPassTarget = false;
 		public event Action<Transform> OnPassingBall;
 
 		public bool IsHoldingBall { get; private set; } = false;
@@ -51,15 +50,9 @@ namespace BallBattle.Soldier
 			targetGate = _gate;
 		}
 
-		public void SetAsPassTarget()
-		{
-			isPassTarget = true;
-		}
-
 		public void HoldingBall()
 		{
 			ballMarker.SetActive(true);
-			isPassTarget = false;
 			IsHoldingBall = true;
 			targetBall.parent = holdingBallParent_;
 			targetBall.position = holdingBallParent_.position;

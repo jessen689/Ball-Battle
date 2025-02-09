@@ -46,7 +46,6 @@ namespace BallBattle
 
 		private IEnumerator Passing(Transform _ball)
 		{
-			passTarget.SetAsPassTarget();
 			while(Vector3.Distance(_ball.position, passTarget.transform.position) > RECEIVE_BALL_DISTANCE)
 			{
 				if (!passTarget.IsActiveMode)

@@ -24,6 +24,7 @@ namespace BallBattle.UI
 		private void UpdateTextBanner()
 		{
 			enemyBannerText_.text = "Enemy - AI " + ((gameData_.CurrState == GameData.GameState.PlayerAttack) ? DEFENDER_STRING : ATTACKER_STRING);
+			playerBannerText_.text = "Player " + ((gameData_.CurrState == GameData.GameState.PlayerAttack) ? ATTACKER_STRING : DEFENDER_STRING);
 		}
 	}
 }
